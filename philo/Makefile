@@ -37,7 +37,7 @@ OBJ_DIR = obj/
 #                                   SOURCES                                    #
 #==============================================================================#
 
-SRC =	main.c \
+SRC =	main.c parsing.c utils.c \
 
 #==============================================================================#
 #                                   HEADERS                                    #
@@ -60,11 +60,11 @@ all : $(NAME)
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEAD_NAME)
 	$(MKDIR) ${@D}
-	$(CC) $(DFLAGS) $(INC) -c $< -o $@
+	$(CC) $(DFLAGS) $(INC) -c $< -o $@  -lpthread
 
 $(NAME) : $(OBJ)
 	echo "$(YELLOW)Making Philosophers$(END)"
-	$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) -g
+	$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) -g -lpthread
 	echo "$(GREEN)Done$(END)"
 
 bonus : all
