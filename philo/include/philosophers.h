@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/12 15:42:42 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/15 19:03:51 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,60 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <stdatomic.h>
 
 # define INT_MIN -2147483648
 # define INT_MAX 2147483647
+
+# define LOG_FORK "has taken a fork"
+# define LOG_EAT "is eating"
+# define LOG_SLEEP "is sleeping"
+# define LOG_THINK "is thinking"
+# define LOG_DIE "died"
 
 typedef enum e_bool {
 	FALSE,
 	TRUE
 }	t_bool;
 
-typedef struct s_args {
-	int	number_of_philosophers;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	number_of_times_each_philosopher_must_eat;
-}	t_arg;
-
 typedef struct s_philo {
-	int				data;
+	int				id;
 	pthread_t		thread;
-	pthread_mutex_t	fork;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 	t_bool			is_eating;
 	t_bool			is_thinking;
 	t_bool			is_sleeping;
+	struct timeval	time;
+	struct s_arg	*args;
 }	t_philo;
 
+typedef struct s_arg {
+	int				number_of_philosophers;
+	long long		time_to_die;
+	long long		time_to_eat;
+	long long		time_to_sleep;
+	int				number_of_times_each_philosopher_must_eat;
+	t_philo			*philos;
+	pthread_mutex_t *forks;
+	pthread_mutex_t	print;
+	t_bool			philo_is_alive;
+	struct timeval	time;
+}	t_arg;
+
+/* philo_utils.c */
+void	print_log(t_arg *args, int timestamp, int philo_id, char *log);
+void	take_fork(t_philo *philo);
+void	drop_fork(t_philo *philo);
+
+/* run.c */
+void		run(t_arg args, t_philo *philos);
+
+/* interaction_philo.c */
+void		sloup(t_philo *philo);
+void		think(t_philo *philo);
+void		eat(t_philo *philo);
+void		*graillance(void *arg);
 
 /* initialize.c */
 void		initialize_structs(t_arg *args, t_philo **philos, char **parameters);
@@ -53,7 +81,6 @@ void		initialize_structs(t_arg *args, t_philo **philos, char **parameters);
 int 		is_valid_parameters(int nb_parameters, char **parameters);
 
 /* utils.c */
-
 long long	ft_long_long_atoi(const char *nptr);
 int			ft_isdigit(int c);
 int			ft_str_isdigit(char *str);

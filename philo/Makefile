@@ -37,7 +37,7 @@ OBJ_DIR = obj/
 #                                   SOURCES                                    #
 #==============================================================================#
 
-SRC =	main.c parsing.c utils.c initialize.c \
+SRC =	main.c parsing.c utils.c initialize.c interaction_philo.c run.c philo_utils.c \
 
 #==============================================================================#
 #                                   HEADERS                                    #
