@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/15 19:03:51 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/16 17:45:36 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_philo {
 	t_bool			is_eating;
 	t_bool			is_thinking;
 	t_bool			is_sleeping;
-	struct timeval	time;
+	long long		last_meal;
 	struct s_arg	*args;
 }	t_philo;
 
@@ -53,22 +53,25 @@ typedef struct s_arg {
 	long long		time_to_eat;
 	long long		time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
+	t_bool			count_meals_number;
 	t_philo			*philos;
 	pthread_mutex_t *forks;
 	pthread_mutex_t	print;
 	t_bool			philo_is_alive;
-	struct timeval	time;
+	struct timeval	meal_time;
 }	t_arg;
 
 /* philo_utils.c */
-void	print_log(t_arg *args, int timestamp, int philo_id, char *log);
-void	take_fork(t_philo *philo);
-void	drop_fork(t_philo *philo);
+long long	get_timestamp(struct timeval meal_time);
+void		print_log(t_arg *args, int philo_id, char *log);
+void		take_fork(t_philo *philo);
+void		drop_fork(t_philo *philo);
 
 /* run.c */
 void		run(t_arg args, t_philo *philos);
 
 /* interaction_philo.c */
+void		think(t_philo *philo);
 void		sloup(t_philo *philo);
 void		think(t_philo *philo);
 void		eat(t_philo *philo);

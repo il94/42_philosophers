@@ -6,52 +6,60 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:54:32 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/15 21:20:27 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/16 19:15:19 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
+void	think(t_philo *philo)
+{
+	print_log(philo->args, philo->id, LOG_THINK);
+}
+
 void	sloup(t_philo *philo)
 {
-	// printf("id = %d DORMIR\n", philo->id);
-	usleep(philo->args->time_to_sleep);	
-	// printf("id = %d dodo fini\n", philo->id);
+	print_log(philo->args, philo->id, LOG_SLEEP);
+	usleep(philo->args->time_to_sleep * 1000);	
 }
 
 void	eat(t_philo *philo)
 {
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
 	take_fork(philo);
-	printf("")
-	if ((time.tv_usec) - (philo->args->time.tv_usec) >  philo->args->time_to_die)
+	// printf("[%lld] [%lld]\n", get_timestamp(philo->args->meal_time), philo->last_meal);
+	if (get_timestamp(philo->args->meal_time) - philo->last_meal > philo->args->time_to_die)
 	{
+		print_log(philo->args, philo->id, LOG_DIE);
+		drop_fork(philo);
 		philo->args->philo_is_alive = FALSE;
 		return ;
 	}
-	else
-		philo->args->time.tv_usec = time.tv_usec;
-	printf("id = %d A des fourchettes\n", philo->id);
-	usleep(philo->args->time_to_eat);
-	// printf("id = %d manger fini\n", philo->id);
+	print_log(philo->args, philo->id, LOG_FORK);
+	usleep(philo->args->time_to_eat * 1000);
 	drop_fork(philo);
+	philo->last_meal = get_timestamp(philo->args->meal_time);
+	print_log(philo->args, philo->id, LOG_EAT);
 }
 
 void	*graillance(void *arg)
 {
 	t_philo	*philo;
-	philo = (t_philo *)arg;
-	int	meal_number;
+	int		meal_counter;
 
-	meal_number = 0;
-	while (philo->args->philo_is_alive)
+	philo = (t_philo *)arg;
+	meal_counter = 0;
+	gettimeofday(&philo->args->meal_time, NULL);
+	if (philo->id % 2 != 0)
+		usleep(8000);
+	while (philo->args->philo_is_alive
+		&& meal_counter <= philo->args->number_of_times_each_philosopher_must_eat)
 	{
+		think(philo);
 		eat(philo);
 		sloup(philo);
-		meal_number++;
+		if (philo->args->count_meals_number == TRUE)
+			meal_counter++;
+		// usleep(500);
 	}
-	printf("END\n");
 	return (NULL);
 }
