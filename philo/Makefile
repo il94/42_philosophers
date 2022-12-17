@@ -9,7 +9,7 @@ NAME = philo
 #==============================================================================#
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 DFLAGS = -MMD
 MKDIR = mkdir -p
 RM = rm -f

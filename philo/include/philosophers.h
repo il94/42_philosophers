@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/16 17:45:36 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/17 16:49:56 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,15 @@ typedef struct s_arg {
 	t_philo			*philos;
 	pthread_mutex_t *forks;
 	pthread_mutex_t	print;
+	pthread_mutex_t	meal;
 	t_bool			philo_is_alive;
 	struct timeval	meal_time;
 }	t_arg;
 
 /* philo_utils.c */
+long long	convert_timeval(struct timeval base);
+void		usloup(t_philo *philo, long long useconds);
+int			check_philo_state(t_philo *philo);
 long long	get_timestamp(struct timeval meal_time);
 void		print_log(t_arg *args, int philo_id, char *log);
 void		take_fork(t_philo *philo);

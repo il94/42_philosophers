@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 09:41:58 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/16 19:05:03 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/17 16:49:46 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static t_arg	initialize_arg_struct(char **parameters)
 		args.count_meals_number = FALSE;
 	}
 	pthread_mutex_init(&args.print, NULL);
+	pthread_mutex_init(&args.meal, NULL);
 	args.philo_is_alive = TRUE;
 	return (args);
 }
