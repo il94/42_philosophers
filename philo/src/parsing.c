@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:03:21 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/12 09:44:33 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/17 21:02:25 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ static int	is_number(char *input)
 	i = 0;
 	if (input[i] == '\0')
 		return (0);
-	if ((input[i] == '-' || input[i] == '+') && ft_isdigit(input[i + 1]))
-		i++;
 	while (input[i])
 	{
 		if (!ft_isdigit(input[i]))

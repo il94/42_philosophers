@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 16:53:08 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/17 18:05:05 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/18 00:44:07 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,60 +20,6 @@ long long	convert_timeval(struct timeval base)
 	return (result);
 }
 
-// void	usloup(t_philo *philo, long long useconds)
-// {
-// 	struct timeval	t_current;
-// 	struct timeval	t_target;
-// 	long long		current;
-// 	long long		target;
-
-// 	gettimeofday(&t_current, NULL);
-// 	gettimeofday(&t_target, NULL);
-// 	current = convert_timeval(t_current);
-// 	target = convert_timeval(t_current) + useconds / 1000;
-// 	while (current < target)
-// 	{
-// 		if (!check_philo_state(philo))
-// 		{
-// 			print_log(philo->args, philo->id, LOG_DIE);
-// 			philo->args->philo_is_alive = FALSE;
-// 			break ;
-// 		}
-// 		// printf("[%ld] [%ld]\n", current, target);
-// 		gettimeofday(&t_current, NULL);
-// 		current = convert_timeval(t_current);
-// 	}
-// }
-
-void	usloup(t_philo *philo, long long useconds)
-{
-	struct timeval	t_current;
-	long long		current;
-	long long		target;
-
-	gettimeofday(&t_current, NULL);
-	current = convert_timeval(t_current) * 1000;
-	target = convert_timeval(t_current) * 1000 + useconds;
-	while (current < target)
-	{
-		if (!check_philo_state(philo))
-		{
-			print_log(philo->args, philo->id, LOG_DIE);
-			philo->args->philo_is_alive = FALSE;
-			break ;
-		}
-		gettimeofday(&t_current, NULL);
-		current = convert_timeval(t_current) * 1000;
-	}
-}
-
-int		check_philo_state(t_philo *philo)
-{
-	if (get_timestamp(philo->args->meal_time) - philo->last_meal > philo->args->time_to_die)
-		return (0);
-	return (1);
-}
-
 long long	get_timestamp(struct timeval meal_time)
 {
 	struct timeval	philo;
@@ -84,17 +30,17 @@ long long	get_timestamp(struct timeval meal_time)
 
 void	print_log(t_arg *args, int philo_id, char *log)
 {
-	pthread_mutex_lock(&args->meal);
-	if (args->philo_is_alive)
+	pthread_mutex_lock(&args->check_philo_life2);
+	if (!args->end_meal)
 	{
-		pthread_mutex_lock(&args->print);
+		pthread_mutex_lock(&args->print_log);
 		printf("[%lldms] Philo %d %s\n", get_timestamp(args->meal_time), philo_id, log);
-		pthread_mutex_unlock(&args->print);
+		pthread_mutex_unlock(&args->print_log);
 	}
-	pthread_mutex_unlock(&args->meal);
+	pthread_mutex_unlock(&args->check_philo_life2);
 }
 
-void	take_fork(t_philo *philo)
+void	take_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
@@ -112,7 +58,7 @@ void	take_fork(t_philo *philo)
 	}
 }
 
-void	drop_fork(t_philo *philo)
+void	drop_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{

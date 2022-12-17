@@ -6,55 +6,62 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:54:32 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/17 18:04:53 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/18 00:45:15 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-void	think(t_philo *philo)
+void	think_deeply(t_philo *philo)
 {
 	print_log(philo->args, philo->id, LOG_THINK);
 }
 
-void	sloup(t_philo *philo)
+void	go_to_bed(t_philo *philo)
 {
 	print_log(philo->args, philo->id, LOG_SLEEP);
-	usloup(philo, philo->args->time_to_sleep * 1000);
-
+	usleep(philo->args->time_to_sleep * 1000);
 }
 
 void	eat(t_philo *philo)
 {
-	take_fork(philo);
+	take_forks(philo);
 	print_log(philo->args, philo->id, LOG_EAT);
-	usloup(philo, philo->args->time_to_eat * 1000);
-	drop_fork(philo);
+	usleep(philo->args->time_to_eat * 1000);
+	drop_forks(philo);
+	// pthread_mutex_lock(&philo->args->check_last_meal);
+	// if (philo->args->end_meal)
 	philo->last_meal = get_timestamp(philo->args->meal_time);
+	// pthread_mutex_unlock(&philo->args->check_last_meal);
 }
 
-void	*graillance(void *arg)
+void	*meal_time(void *arg)
 {
 	t_philo	*philo;
-	int		meal_counter;
 
 	philo = (t_philo *)arg;
-	meal_counter = 0;
-	gettimeofday(&philo->args->meal_time, NULL);
 	if (philo->id % 2 != 0)
-		usleep(1);
-	while (philo->args->philo_is_alive
-		&& meal_counter <= philo->args->number_of_times_each_philosopher_must_eat)
+		usleep(10);
+	// pthread_mutex_lock(&philo->args->check_philo_life2);
+	// while (!philo->args->end_meal
+	// 	&& philo->args->meal_counter <= philo->args->max_meals)
+	// pthread_mutex_lock(&philo->args->check_philo_life2);
+	while (1)
 	{
-		if (philo->args->philo_is_alive)
-			eat(philo);
-		if (philo->args->philo_is_alive)
-			sloup(philo);
-		if (philo->args->philo_is_alive)
-			think(philo);
-		if (philo->args->count_meals_number == TRUE)
-			meal_counter++;
-		// usleep(500);
+		pthread_mutex_lock(&philo->args->check_philo_life2);
+		if (philo->args->end_meal)
+		{
+			pthread_mutex_unlock(&philo->args->check_philo_life2);		
+			break ;
+		}
+		pthread_mutex_unlock(&philo->args->check_philo_life2);
+		eat(philo);
+		go_to_bed(philo);
+		think_deeply(philo);
+		// if (philo->args->count_max_meals == TRUE)
+		// 	philo->args->meal_counter += 1;
+		usleep(500);
 	}
+	// pthread_mutex_lock(&philo->args->check_philo_life2);
 	return (NULL);
 }

@@ -9,7 +9,8 @@ NAME = philo
 #==============================================================================#
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
 DFLAGS = -MMD
 MKDIR = mkdir -p
 RM = rm -f
@@ -60,7 +61,7 @@ all : $(NAME)
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEAD_NAME)
 	$(MKDIR) ${@D}
-	$(CC) $(DFLAGS) $(INC) -c $< -o $@  -lpthread
+	$(CC) $(CFLAGS) $(DFLAGS) $(INC) -c $< -o $@  -lpthread
 
 $(NAME) : $(OBJ)
 	echo "$(YELLOW)Making Philosophers$(END)"

@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 09:41:58 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/17 16:49:46 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/17 22:01:36 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ static t_philo	*initialize_philo_struct(t_arg *args)
 	{
 		philos[i].id = i;		
 		philos[i].args = args;
-		philos[i].is_eating = FALSE;
-		philos[i].is_thinking = FALSE;
-		philos[i].is_sleeping = FALSE;
 		pthread_mutex_init(&args->forks[i], NULL);
 		philos[i].last_meal = 0;
 		i++;
@@ -57,17 +54,22 @@ static t_arg	initialize_arg_struct(char **parameters)
 	args.time_to_sleep = ft_long_long_atoi(parameters[3]);
 	if (parameters[4])
 	{
-		args.number_of_times_each_philosopher_must_eat = ft_long_long_atoi(parameters[4]);
-		args.count_meals_number = TRUE;
+		args.max_meals = ft_long_long_atoi(parameters[4]);
+		args.count_max_meals = TRUE;
 	}
 	else
 	{
-		args.number_of_times_each_philosopher_must_eat = 0;
-		args.count_meals_number = FALSE;
+		args.max_meals = 0;
+		args.count_max_meals = FALSE;
 	}
-	pthread_mutex_init(&args.print, NULL);
-	pthread_mutex_init(&args.meal, NULL);
+	pthread_mutex_init(&args.print_log, NULL);
+	pthread_mutex_init(&args.check_philo_life, NULL);
+	pthread_mutex_init(&args.check_philo_life2, NULL);
+	pthread_mutex_init(&args.check_last_meal, NULL);
 	args.philo_is_alive = TRUE;
+	gettimeofday(&args.meal_time, NULL);
+	args.end_meal = FALSE;
+	args.meal_counter = 0;
 	return (args);
 }
 

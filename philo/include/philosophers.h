@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/17 16:49:56 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/18 00:42:07 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ typedef struct s_philo {
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	t_bool			is_eating;
-	t_bool			is_thinking;
-	t_bool			is_sleeping;
 	long long		last_meal;
 	struct s_arg	*args;
 }	t_philo;
@@ -52,45 +49,49 @@ typedef struct s_arg {
 	long long		time_to_die;
 	long long		time_to_eat;
 	long long		time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
-	t_bool			count_meals_number;
-	t_philo			*philos;
-	pthread_mutex_t *forks;
-	pthread_mutex_t	print;
-	pthread_mutex_t	meal;
+	int				max_meals;
+	int				meal_counter;
+	t_bool			count_max_meals;
 	t_bool			philo_is_alive;
+	t_bool			end_meal;
 	struct timeval	meal_time;
+	pthread_mutex_t *forks;
+	pthread_mutex_t	print_log;
+	pthread_mutex_t	check_philo_life;
+	pthread_mutex_t	check_philo_life2;
+	pthread_mutex_t	check_last_meal;
+	pthread_t		meal_thread;
+	t_philo			*philos;
 }	t_arg;
 
 /* philo_utils.c */
 long long	convert_timeval(struct timeval base);
-void		usloup(t_philo *philo, long long useconds);
-int			check_philo_state(t_philo *philo);
 long long	get_timestamp(struct timeval meal_time);
 void		print_log(t_arg *args, int philo_id, char *log);
-void		take_fork(t_philo *philo);
-void		drop_fork(t_philo *philo);
+void		take_forks(t_philo *philo);
+void		drop_forks(t_philo *philo);
 
 /* run.c */
-void		run(t_arg args, t_philo *philos);
+void		*check_end(void *strouct);
+void		run(t_arg *args, t_philo *philos);
 
 /* interaction_philo.c */
-void		think(t_philo *philo);
-void		sloup(t_philo *philo);
-void		think(t_philo *philo);
+void		think_deeply(t_philo *philo);
+void		go_to_bed(t_philo *philo);
+void		think_deeply(t_philo *philo);
 void		eat(t_philo *philo);
-void		*graillance(void *arg);
+void		*meal_time(void *arg);
 
 /* initialize.c */
 void		initialize_structs(t_arg *args, t_philo **philos, char **parameters);
-
-/* parsing.c */
-int 		is_valid_parameters(int nb_parameters, char **parameters);
 
 /* utils.c */
 long long	ft_long_long_atoi(const char *nptr);
 int			ft_isdigit(int c);
 int			ft_str_isdigit(char *str);
+
+/* parsing.c */
+int 		is_valid_parameters(int nb_parameters, char **parameters);
 
 /* main.c */
 int			main(int ac, char **av);
