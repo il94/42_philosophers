@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:03:21 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/17 21:02:25 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/19 19:32:05 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,14 @@ static int	is_int(long long value, char *input)
 	return (1);
 }
 
-static int	is_number(char *input)
+static int	is_valid_content_parameters(int nb_parameters, char **parameters)
 {
 	int	i;
 
 	i = 0;
-	if (input[i] == '\0')
-		return (0);
-	while (input[i])
-	{
-		if (!ft_isdigit(input[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-static int	is_valid_content_parameters(int nb_parameters, char **parameters)
-{
-	int i;
-
-	i = 0;
 	while (i < nb_parameters)
 	{
-		if (!is_number(parameters[i])
+		if (!ft_str_isdigit(parameters[i])
 			|| !is_int(ft_long_long_atoi(parameters[i]), parameters[i]))
 		{
 			printf("Invalid parameters\n");
@@ -71,7 +55,7 @@ static int	is_valid_number_parameters(int nb_parameters)
 	return (1);
 }
 
-int is_valid_parameters(int nb_parameters, char **parameters)
+int	is_valid_parameters(int nb_parameters, char **parameters)
 {
 	if (!is_valid_number_parameters(nb_parameters)
 		|| !is_valid_content_parameters(nb_parameters, parameters))

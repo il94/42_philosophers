@@ -9,8 +9,7 @@ NAME = philo
 #==============================================================================#
 
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
+CFLAGS = -Wall -Wextra -Werror
 DFLAGS = -MMD
 MKDIR = mkdir -p
 RM = rm -f
@@ -38,7 +37,8 @@ OBJ_DIR = obj/
 #                                   SOURCES                                    #
 #==============================================================================#
 
-SRC =	main.c parsing.c utils.c initialize.c interaction_philo.c run.c philo_utils.c \
+SRC =	main.c parsing.c utils.c initialize.c run.c secure_data_access.c \
+		meal_time.c meal_time_utils.c meal_monitoring.c \
 
 #==============================================================================#
 #                                   HEADERS                                    #
@@ -68,8 +68,6 @@ $(NAME) : $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) -g -lpthread
 	echo "$(GREEN)Done$(END)"
 
-bonus : all
-
 clean :
 	echo "$(PURPLE)Cleaning Philosophers's objects...$(END)"
 	$(RM)r $(OBJ_DIR)
@@ -83,5 +81,5 @@ fclean : clean
 re : fclean
 	$(MAKE_SILENT) all
 
-.PHONY : all clean fclean re bonus
+.PHONY : all clean fclean re
 .SILENT :

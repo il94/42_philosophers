@@ -1,0 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   interaction_philo.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/13 10:54:32 by ilandols          #+#    #+#             */
+/*   Updated: 2022/12/19 19:08:23 by ilandols         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/philosophers.h"
+
+static void	think_deeply(t_philo *philo)
+{
+	secure_print_log(philo->args, philo->id, LOG_THINK);
+}
+
+static void	go_to_bed(t_philo *philo)
+{
+	secure_print_log(philo->args, philo->id, LOG_SLEEP);
+	usleep(philo->args->time_to_sleep * 1000);
+}
+
+static void	eat_spaghetti(t_philo *philo)
+{
+	take_forks(philo);
+	secure_print_log(philo->args, philo->id, LOG_EAT);
+	usleep(philo->args->time_to_eat * 1000);
+	drop_forks(philo);
+	secure_set_last_meal(philo);
+	secure_set_has_eaten(philo);
+}
+
+void	*meal_time(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	if (philo->id % 2 != 0)
+		usleep(10);
+	while (1)
+	{
+		if (secure_check_end_meal(philo->args))
+			break ;
+		eat_spaghetti(philo);
+		go_to_bed(philo);
+		think_deeply(philo);
+		usleep(500);
+	}
+	return (NULL);
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/18 00:42:07 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:48:47 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ typedef enum e_bool {
 
 typedef struct s_philo {
 	int				id;
+	t_bool			has_eaten;
+	long long		last_meal;
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	long long		last_meal;
 	struct s_arg	*args;
 }	t_philo;
 
@@ -51,47 +52,50 @@ typedef struct s_arg {
 	long long		time_to_sleep;
 	int				max_meals;
 	int				meal_counter;
-	t_bool			count_max_meals;
-	t_bool			philo_is_alive;
+	t_bool			max_meals_mode;
 	t_bool			end_meal;
-	struct timeval	meal_time;
-	pthread_mutex_t *forks;
-	pthread_mutex_t	print_log;
-	pthread_mutex_t	check_philo_life;
-	pthread_mutex_t	check_philo_life2;
+	struct timeval	start_meal;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	lock_print_log;
+	pthread_mutex_t	check_end_meal;
 	pthread_mutex_t	check_last_meal;
+	pthread_mutex_t	check_has_eaten;
 	pthread_t		meal_thread;
 	t_philo			*philos;
 }	t_arg;
 
-/* philo_utils.c */
-long long	convert_timeval(struct timeval base);
-long long	get_timestamp(struct timeval meal_time);
-void		print_log(t_arg *args, int philo_id, char *log);
+/* secure_data_access.c */
+int			secure_check_end_meal(t_arg *args);
+void		secure_set_end_meal(t_arg *args);
+void		secure_set_last_meal(t_philo *philo);
+void		secure_set_has_eaten(t_philo *philo);
+
+/* meal_monitoring.c */
+void		*meal_monitoring(void *arg);
+
+/* meal_time_utils.c */
+void		secure_print_log(t_arg *args, int philo_id, char *log);
 void		take_forks(t_philo *philo);
 void		drop_forks(t_philo *philo);
 
-/* run.c */
-void		*check_end(void *strouct);
-void		run(t_arg *args, t_philo *philos);
-
-/* interaction_philo.c */
-void		think_deeply(t_philo *philo);
-void		go_to_bed(t_philo *philo);
-void		think_deeply(t_philo *philo);
-void		eat(t_philo *philo);
+/* meal_time.c */
 void		*meal_time(void *arg);
 
-/* initialize.c */
-void		initialize_structs(t_arg *args, t_philo **philos, char **parameters);
+/* run.c */
+void		run(t_arg *args, t_philo *philos);
 
-/* utils.c */
-long long	ft_long_long_atoi(const char *nptr);
-int			ft_isdigit(int c);
-int			ft_str_isdigit(char *str);
+/* initialize.c */
+void		initialize_struct(t_arg *args, t_philo **philos, char **parameters);
 
 /* parsing.c */
-int 		is_valid_parameters(int nb_parameters, char **parameters);
+int			is_valid_parameters(int nb_parameters, char **parameters);
+
+/* utils.c */
+long long	convert_timeval(struct timeval base);
+long long	get_timestamp(struct timeval start);
+long long	ft_long_long_atoi(const char *nptr);
+int			ft_str_isdigit(char *str);
+void		free_all_and_exit(t_arg *args);
 
 /* main.c */
 int			main(int ac, char **av);
