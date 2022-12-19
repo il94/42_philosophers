@@ -6,7 +6,7 @@
 /*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 16:53:08 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/19 20:06:17 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/19 22:27:19 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@ void	take_forks(t_philo *philo)
 	{
 		pthread_mutex_lock(philo->right_fork);
 		secure_print_log(philo->args, philo->id, LOG_FORK);
-		pthread_mutex_lock(philo->left_fork);
-		secure_print_log(philo->args, philo->id, LOG_FORK);
+		if (philo->left_fork != philo->right_fork)
+		{
+			pthread_mutex_lock(philo->left_fork);
+			secure_print_log(philo->args, philo->id, LOG_FORK);
+		}
 	}
 	else
 	{
@@ -46,5 +49,6 @@ void	take_forks(t_philo *philo)
 void	drop_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
+	if (philo->left_fork != philo->right_fork)
+		pthread_mutex_unlock(philo->left_fork);
 }

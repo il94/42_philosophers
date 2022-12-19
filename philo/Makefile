@@ -10,6 +10,7 @@ NAME = philo
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 DFLAGS = -MMD
 MKDIR = mkdir -p
 RM = rm -f

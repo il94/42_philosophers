@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   interaction_philo.c                                :+:      :+:    :+:   */
+/*   meal_time.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:54:32 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/19 19:08:23 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/19 22:26:44 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ static void	go_to_bed(t_philo *philo)
 static void	eat_spaghetti(t_philo *philo)
 {
 	take_forks(philo);
+	if (philo->args->number_of_philosophers == 1)
+	{
+		usleep(philo->args->time_to_die * 1000 + 500);
+		drop_forks(philo);
+		return ;
+	}
 	secure_print_log(philo->args, philo->id, LOG_EAT);
 	usleep(philo->args->time_to_eat * 1000);
 	drop_forks(philo);
