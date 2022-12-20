@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:54:32 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/20 16:59:34 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:42:55 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 static void	think_deeply(t_philo *philo)
 {
 	secure_print_log(philo->args, philo->id, LOG_THINK);
+	usleep(((philo->args->time_to_die - (philo->args->time_to_eat + philo->args->time_to_sleep)) / 2) * 1000);
+	
 }
 
 static void	go_to_bed(t_philo *philo)
@@ -44,10 +46,9 @@ void	*meal_time(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2)
+	if (philo->id % 2 != 0)
 	{
 		think_deeply(philo);
-		usleep(philo->args->time_to_eat * 1000);
 	}
 	while (1)
 	{
@@ -56,7 +57,7 @@ void	*meal_time(void *arg)
 		eat_spaghetti(philo);
 		go_to_bed(philo);
 		think_deeply(philo);
-		usleep(500);
+		//usleep(500);
 	}
 	return (NULL);
 }

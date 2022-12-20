@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 13:49:01 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/20 17:23:02 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/19 22:03:20 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,8 @@ static void	destroy_all_mutex(t_arg *args)
 		free_all_and_exit(args);
 	if (pthread_mutex_destroy(&args->check_last_meal) != 0)
 		free_all_and_exit(args);
-	if (args->max_meals_mode)
-	{
-		if (pthread_mutex_destroy(&args->check_has_eaten) != 0)
-			free_all_and_exit(args);
-	}
+	if (pthread_mutex_destroy(&args->check_has_eaten) != 0)
+		free_all_and_exit(args);
 }
 
 static void	join_all_threads(t_arg *args, t_philo *philos)

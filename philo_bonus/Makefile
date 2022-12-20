@@ -2,15 +2,15 @@
 #                                   TARGETS                                    #
 #==============================================================================#
 
-NAME = philo
+NAME = philo_bonus
 
 #==============================================================================#
 #                                   COMMANDS                                   #
 #==============================================================================#
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g3
-#CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 DFLAGS = -MMD
 MKDIR = mkdir -p
 RM = rm -f
@@ -60,7 +60,7 @@ OBJ = $(addprefix ${OBJ_DIR}, ${SRC:.c=.o})
 
 all : $(NAME)
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEAD_NAME) Makefile
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEAD_NAME)
 	$(MKDIR) ${@D}
 	$(CC) $(CFLAGS) $(DFLAGS) $(INC) -c $< -o $@  -lpthread
 

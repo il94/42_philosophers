@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meal_time_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 16:53:08 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/20 16:54:57 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/19 22:27:19 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	secure_print_log(t_arg *args, int philo_id, char *log)
 	if (!args->end_meal)
 	{
 		pthread_mutex_lock(&args->lock_print_log);
-		printf("%lld %d %s\n", get_timestamp(args->start_meal),
+		printf("[%lldms] Philo %d %s\n", get_timestamp(args->start_meal),
 			philo_id, log);
 		pthread_mutex_unlock(&args->lock_print_log);
 	}

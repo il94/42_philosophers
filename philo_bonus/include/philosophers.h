@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/20 18:57:00 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/20 19:06:58 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
-# include <limits.h>
+
+# define INT_MIN -2147483648
+# define INT_MAX 2147483647
 
 # define LOG_FORK "has taken a fork"
 # define LOG_EAT "is eating"
