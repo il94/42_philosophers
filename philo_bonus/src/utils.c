@@ -72,8 +72,6 @@ int	ft_str_isdigit(char *str)
 
 void	free_all_and_exit(t_arg *args)
 {
-	if (args->forks)
-		free(args->forks);
 	if (args->philos)
 		free(args->philos);
 	exit (EXIT_FAILURE);

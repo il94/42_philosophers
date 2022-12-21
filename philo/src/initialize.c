@@ -73,6 +73,7 @@ static t_arg	initialize_arg_struct(char **parameters)
 	args.time_to_die = ft_long_long_atoi(parameters[1]);
 	args.time_to_eat = ft_long_long_atoi(parameters[2]);
 	args.time_to_sleep = ft_long_long_atoi(parameters[3]);
+	args.time_to_think = args.time_to_die;
 	args.max_meals_mode = FALSE;
 	if (parameters[4])
 	{

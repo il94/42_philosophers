@@ -47,6 +47,7 @@ typedef struct s_arg {
 	long long		time_to_die;
 	long long		time_to_eat;
 	long long		time_to_sleep;
+	long long		time_to_think;
 	int				max_meals;
 	int				meal_counter;
 	t_bool			max_meals_mode;

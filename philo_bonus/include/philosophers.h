@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/20 19:06:58 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/21 23:07:25 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <semaphore.h>
+# include <fcntl.h>
 
 # define INT_MIN -2147483648
 # define INT_MAX 2147483647
@@ -36,11 +38,9 @@ typedef enum e_bool {
 
 typedef struct s_philo {
 	int				id;
+	pid_t			pid;
 	t_bool			has_eaten;
 	long long		last_meal;
-	pthread_t		thread;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
 	struct s_arg	*args;
 }	t_philo;
 
@@ -49,16 +49,14 @@ typedef struct s_arg {
 	long long		time_to_die;
 	long long		time_to_eat;
 	long long		time_to_sleep;
+	long long		time_to_think;
 	int				max_meals;
 	int				meal_counter;
 	t_bool			max_meals_mode;
 	t_bool			end_meal;
 	struct timeval	start_meal;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	lock_print_log;
-	pthread_mutex_t	check_end_meal;
-	pthread_mutex_t	check_last_meal;
-	pthread_mutex_t	check_has_eaten;
+	sem_t			*logs;
+	sem_t			*forks;
 	pthread_t		meal_thread;
 	t_philo			*philos;
 }	t_arg;

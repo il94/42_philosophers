@@ -49,6 +49,7 @@ void	*meal_time(void *arg)
 	if (philo->id % 2 != 0)
 	{
 		think_deeply(philo);
+		usleep(philo->args->time_to_think * 1000);
 	}
 	while (1)
 	{

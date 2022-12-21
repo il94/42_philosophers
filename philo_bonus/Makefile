@@ -9,7 +9,8 @@ NAME = philo_bonus
 #==============================================================================#
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS =
+# CFLAGS = -Wall -Wextra -Werror
 # CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 DFLAGS = -MMD
 MKDIR = mkdir -p
@@ -38,9 +39,10 @@ OBJ_DIR = obj/
 #                                   SOURCES                                    #
 #==============================================================================#
 
-SRC =	main.c parsing.c utils.c initialize.c run.c secure_data_access.c \
-		meal_time.c meal_time_utils.c meal_monitoring.c \
+SRC =	main.c parsing.c utils.c initialize.c run.c \
 
+# SRC =	main.c parsing.c utils.c initialize.c run.c secure_data_access.c \
+# 		meal_time.c meal_time_utils.c meal_monitoring.c \
 #==============================================================================#
 #                                   HEADERS                                    #
 #==============================================================================#
@@ -65,17 +67,17 @@ $(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEAD_NAME)
 	$(CC) $(CFLAGS) $(DFLAGS) $(INC) -c $< -o $@  -lpthread
 
 $(NAME) : $(OBJ)
-	echo "$(YELLOW)Making Philosophers$(END)"
+	echo "$(YELLOW)Making Philosophers bonus$(END)"
 	$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) -g -lpthread
 	echo "$(GREEN)Done$(END)"
 
 clean :
-	echo "$(PURPLE)Cleaning Philosophers's objects...$(END)"
+	echo "$(PURPLE)Cleaning Philosophers's bonus objects...$(END)"
 	$(RM)r $(OBJ_DIR)
 	echo "$(GREEN)Done$(END)"
 
 fclean : clean
-	echo "$(PURPLE)Cleaning Philosophers...$(END)"
+	echo "$(PURPLE)Cleaning Philosophers bonus...$(END)"
 	$(RM) $(NAME)
 	echo "$(GREEN)Done$(END)"
 
