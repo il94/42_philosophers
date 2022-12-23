@@ -6,86 +6,58 @@
 /*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 20:47:45 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/19 22:01:59 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/24 00:37:49 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-static void	unset_has_eaten(t_philo *philo)
+static int	monitoring_meal_count(t_philo *philo)
 {
-	int	i;
-
-	i = 0;
-	while (i < philo->args->number_of_philosophers)
+	sem_wait(philo->args->check_has_eaten);
+	if (philo->has_eaten)
 	{
-		philo[i].has_eaten = FALSE;
-		i++;
+		philo->args->meal_counter++;
+		philo->has_eaten = FALSE;
 	}
-}
-
-static int	all_philos_has_eaten(t_philo *philo)
-{
-	int	i;
-
-	i = 0;
-	while (i < philo->args->number_of_philosophers)
+	if (philo->args->meal_counter >= philo->args->max_meals)
 	{
-		if (!philo[i].has_eaten)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-static int	monitoring_meal_count(t_arg *args)
-{
-	pthread_mutex_lock(&args->check_has_eaten);
-	if (all_philos_has_eaten(args->philos))
-	{
-		args->meal_counter++;
-		unset_has_eaten(args->philos);
-	}
-	if (args->meal_counter >= args->max_meals)
-	{
-		pthread_mutex_unlock(&args->check_has_eaten);
+		sem_post(philo->args->check_has_eaten);
 		return (1);
 	}
-	pthread_mutex_unlock(&args->check_has_eaten);
+	sem_post(philo->args->check_has_eaten);
 	return (0);
 }
 
-static int	monitoring_philos_state(t_arg *args)
+static int	monitoring_philos_state(t_philo *philo)
 {
-	static int	i;
-
-	pthread_mutex_lock(&args->check_last_meal);
-	if (get_timestamp(args->start_meal) - args->philos[i].last_meal
-		> args->time_to_die)
+	sem_wait(philo->args->check_last_meal);
+	if (get_timestamp(philo->args->start_meal) - philo->last_meal
+		> philo->args->time_to_die)
 	{
-		secure_print_log(args, args->philos[i].id, LOG_DIE);
-		pthread_mutex_unlock(&args->check_last_meal);
+		secure_print_log_end(philo->args, philo->id, LOG_DIE);
+		sem_post(philo->args->check_last_meal);
 		return (1);
 	}
-	pthread_mutex_unlock(&args->check_last_meal);
-	i++;
-	if (i >= args->number_of_philosophers)
-		i = 0;
+	sem_post(philo->args->check_last_meal);
 	return (0);
 }
 
 void	*meal_monitoring(void *arg)
 {
-	t_arg	*args;
+	t_philo	*philo;
 
-	args = (t_arg *)arg;
+	philo = (t_philo *)arg;
 	while (1)
 	{
-		if (args->max_meals_mode && monitoring_meal_count(args))
+		if ((philo->args->max_meals_mode && monitoring_meal_count(philo))
+			|| (monitoring_philos_state(philo)))
+		{
+			// free_memory(philo->args);
+			// exit (1);
 			break ;
-		else if (monitoring_philos_state(args))
-			break ;
+		}
 	}
-	secure_set_end_meal(args);
+	secure_set_end_meal(philo->args);
 	return (NULL);
 }

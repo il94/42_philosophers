@@ -1,4 +1,6 @@
-obj
 a.out
 .vscode
 philo/philo
+philo/obj
+philo_bonus/philo_bonus
+philo_bonus/obj

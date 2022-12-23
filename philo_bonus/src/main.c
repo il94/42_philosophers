@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:01:31 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/20 20:16:44 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/24 00:22:10 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int	main(int ac, char **av)
 		exit (EXIT_FAILURE);
 	initialize_struct(&args, &philos, av + 1);
 	run(&args, philos);
-	free(philos);
+	free_memory(&args, FALSE);
 	return (0);
 }

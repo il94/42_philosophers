@@ -9,9 +9,8 @@ NAME = philo_bonus
 #==============================================================================#
 
 CC = gcc
-CFLAGS =
-# CFLAGS = -Wall -Wextra -Werror
-# CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g
+# CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
 DFLAGS = -MMD
 MKDIR = mkdir -p
 RM = rm -f
@@ -39,10 +38,9 @@ OBJ_DIR = obj/
 #                                   SOURCES                                    #
 #==============================================================================#
 
-SRC =	main.c parsing.c utils.c initialize.c run.c \
+SRC =	main.c parsing.c utils.c initialize.c run.c secure_data_access.c \
+		meal_time.c meal_time_utils.c meal_monitoring.c \
 
-# SRC =	main.c parsing.c utils.c initialize.c run.c secure_data_access.c \
-# 		meal_time.c meal_time_utils.c meal_monitoring.c \
 #==============================================================================#
 #                                   HEADERS                                    #
 #==============================================================================#
@@ -62,7 +60,7 @@ OBJ = $(addprefix ${OBJ_DIR}, ${SRC:.c=.o})
 
 all : $(NAME)
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEAD_NAME)
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEAD_NAME) Makefile
 	$(MKDIR) ${@D}
 	$(CC) $(CFLAGS) $(DFLAGS) $(INC) -c $< -o $@  -lpthread
 

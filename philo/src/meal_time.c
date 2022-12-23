@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meal_time.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:54:32 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/20 16:59:34 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/24 00:26:05 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ void	*meal_time(void *arg)
 		think_deeply(philo);
 		usleep(philo->args->time_to_think * 1000);
 	}
-	while (1)
+	while (!secure_check_end_meal(philo->args))
 	{
-		if (secure_check_end_meal(philo->args))
-			break ;
 		eat_spaghetti(philo);
 		go_to_bed(philo);
 		think_deeply(philo);

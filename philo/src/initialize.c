@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 09:41:58 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/20 17:18:02 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/24 00:20:30 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static t_arg	initialize_arg_struct(char **parameters)
 	args.time_to_die = ft_long_long_atoi(parameters[1]);
 	args.time_to_eat = ft_long_long_atoi(parameters[2]);
 	args.time_to_sleep = ft_long_long_atoi(parameters[3]);
-	args.time_to_think = args.time_to_die;
+	args.time_to_think = args.time_to_eat;
 	args.max_meals_mode = FALSE;
 	if (parameters[4])
 	{

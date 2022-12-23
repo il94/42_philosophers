@@ -6,7 +6,7 @@
 /*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 16:33:00 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/19 21:37:35 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/24 00:22:45 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,20 @@ int	ft_str_isdigit(char *str)
 	return (1);
 }
 
-void	free_all_and_exit(t_arg *args)
+void	free_memory(t_arg *args, t_bool exit_bool)
 {
+	sem_close(args->forks);
+	sem_close(args->lock_print_log);
+	sem_close(args->check_end_meal);
+	sem_close(args->check_last_meal);
+	sem_close(args->check_has_eaten);
+	sem_unlink("/forks");
+	sem_unlink("/lock_print_log");
+	sem_unlink("/check_end_meal");
+	sem_unlink("/check_last_meal");
+	sem_unlink("/check_has_eaten");
 	if (args->philos)
 		free(args->philos);
-	exit (EXIT_FAILURE);
+	if (exit_bool == TRUE)
+		exit (EXIT_FAILURE);
 }

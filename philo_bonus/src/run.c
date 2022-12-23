@@ -6,16 +6,16 @@
 /*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 13:49:01 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/21 23:18:11 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/24 00:19:52 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-static void	create_all_forks(t_arg *args, t_philo *philos)
+static void	start_process(t_arg *args, t_philo *philos)
 {
-	int	i;
-	pid_t pid;
+	int		i;
+	pid_t	pid;
 
 	i = 0;
 	pid = 1;
@@ -24,49 +24,70 @@ static void	create_all_forks(t_arg *args, t_philo *philos)
 		if (pid != 0)
 		{
 			pid = fork();
-			philos->pid = pid;
-			// meal_time(&philos[i]);
+			if (pid == 0)
+				meal_time(&philos[i]);
 		}
 		if (pid < 0)
-			free_all_and_exit(args);
+			free_memory(args, TRUE);
+		philos[i].pid = pid;
 		i++;
 	}
 }	
 
-// static void	join_all_threads(t_arg *args, t_philo *philos)
+static void	end_process(t_arg *args, t_philo *philos)
+{
+	int		i;
+
+	waitpid(-1, NULL, 0);
+	i = 0;
+	while (i < args->number_of_philosophers)
+	{
+		kill(philos[i].pid, SIGKILL);
+		i++;
+	}
+}	
+
+// static void	create_all_forks(t_arg *args, t_philo *philos)
 // {
-// 	int	i;
+// 	int		i;
+// 	pid_t	pid;
+// 	int		return_process_value;
 
 // 	i = 0;
+// 	pid = 1;
 // 	while (i < args->number_of_philosophers)
 // 	{
-// 		if (pthread_join(philos[i].thread, NULL) != 0)
+// 		if (pid != 0)
+// 		{
+// 			pid = fork();
+// 			if (pid == 0)
+// 				meal_time(&philos[i]);
+// 		}
+// 		if (pid < 0)
 // 			free_all_and_exit(args);
+// 		philos[i].pid = pid;
 // 		i++;
 // 	}
-// 	if (pthread_join(args->meal_thread, NULL) != 0)
-// 		free_all_and_exit(args);
-// }
-
-// static void	create_all_threads(t_arg *args, t_philo *philos)
-// {
-// 	int	i;
-
 // 	i = 0;
-// 	if (pthread_create(&args->meal_thread, NULL, meal_monitoring, args) != 0)
-// 		free_all_and_exit(args);
 // 	while (i < args->number_of_philosophers)
 // 	{
-// 		if (pthread_create(&philos[i].thread, NULL, meal_time, &philos[i]) != 0)
-// 			free_all_and_exit(args);
+// 		waitpid(-1, &return_process_value, 0);
+// 		if (return_process_value != 0)
+// 		{
+// 			i = 0;
+// 			while (i < args->number_of_philosophers)
+// 			{
+// 				kill(philos[i].pid, SIGKILL);
+// 				i++;
+// 			}
+// 			break ;
+// 		}
 // 		i++;
 // 	}
 // }
 
 void	run(t_arg *args, t_philo *philos)
 {
-	create_all_forks(args, philos);
-	
-	// join_all_threads(args, philos);
-	// destroy_all_mutex(args);
+	start_process(args, philos);
+	end_process(args, philos);
 }

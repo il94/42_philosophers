@@ -6,7 +6,7 @@
 /*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/21 23:07:25 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/24 00:35:28 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <pthread.h>
 # include <semaphore.h>
 # include <fcntl.h>
+# include <signal.h>
+# include <wait.h>
 
 # define INT_MIN -2147483648
 # define INT_MAX 2147483647
@@ -55,8 +57,11 @@ typedef struct s_arg {
 	t_bool			max_meals_mode;
 	t_bool			end_meal;
 	struct timeval	start_meal;
-	sem_t			*logs;
 	sem_t			*forks;
+	sem_t			*lock_print_log;
+	sem_t			*check_end_meal;
+	sem_t			*check_last_meal;
+	sem_t			*check_has_eaten;
 	pthread_t		meal_thread;
 	t_philo			*philos;
 }	t_arg;
@@ -71,6 +76,7 @@ void		secure_set_has_eaten(t_philo *philo);
 void		*meal_monitoring(void *arg);
 
 /* meal_time_utils.c */
+void		secure_print_log_end(t_arg *args, int philo_id, char *log);
 void		secure_print_log(t_arg *args, int philo_id, char *log);
 void		take_forks(t_philo *philo);
 void		drop_forks(t_philo *philo);
@@ -92,7 +98,7 @@ long long	convert_timeval(struct timeval base);
 long long	get_timestamp(struct timeval start);
 long long	ft_long_long_atoi(const char *nptr);
 int			ft_str_isdigit(char *str);
-void		free_all_and_exit(t_arg *args);
+void		free_memory(t_arg *args, t_bool exit_bool);
 
 /* main.c */
 int			main(int ac, char **av);
