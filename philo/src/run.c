@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 13:49:01 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/20 17:23:02 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/27 17:30:04 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ static void	destroy_all_mutex(t_arg *args)
 	}
 }
 
-static void	join_all_threads(t_arg *args, t_philo *philos)
+static void	join_all_threads(t_arg *args)
 {
 	int	i;
 
 	i = 0;
 	while (i < args->number_of_philosophers)
 	{
-		if (pthread_join(philos[i].thread, NULL) != 0)
+		if (pthread_join(args->philos[i].thread, NULL) != 0)
 			free_all_and_exit(args);
 		i++;
 	}
@@ -51,7 +51,7 @@ static void	join_all_threads(t_arg *args, t_philo *philos)
 		free_all_and_exit(args);
 }
 
-static void	create_all_threads(t_arg *args, t_philo *philos)
+static void	create_all_threads(t_arg *args)
 {
 	int	i;
 
@@ -60,15 +60,16 @@ static void	create_all_threads(t_arg *args, t_philo *philos)
 		free_all_and_exit(args);
 	while (i < args->number_of_philosophers)
 	{
-		if (pthread_create(&philos[i].thread, NULL, meal_time, &philos[i]) != 0)
+		if (pthread_create(&args->philos[i].thread, NULL, meal_time,
+				&args->philos[i]) != 0)
 			free_all_and_exit(args);
 		i++;
 	}
 }
 
-void	run(t_arg *args, t_philo *philos)
+void	run(t_arg *args)
 {
-	create_all_threads(args, philos);
-	join_all_threads(args, philos);
+	create_all_threads(args);
+	join_all_threads(args);
 	destroy_all_mutex(args);
 }

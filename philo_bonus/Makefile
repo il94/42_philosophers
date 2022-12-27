@@ -9,8 +9,7 @@ NAME = philo_bonus
 #==============================================================================#
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
-# CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g3
+CFLAGS = -Wall -Wextra -Werror
 DFLAGS = -MMD
 MKDIR = mkdir -p
 RM = rm -f

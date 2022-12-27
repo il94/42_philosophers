@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meal_time.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
+/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:54:32 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/24 00:21:53 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/27 17:26:57 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,24 @@ static void	eat_spaghetti(t_philo *philo)
 	secure_set_has_eaten(philo);
 }
 
-void	*meal_time(void *arg)
+void	meal_time(t_philo *philo)
 {
-	t_philo	*philo;
+	pthread_t	monitor;
 
-	philo = (t_philo *)arg;
-	pthread_create(&philo->args->meal_thread, NULL, meal_monitoring, philo);
-	pthread_detach(philo->args->meal_thread);
-	if (secure_check_end_meal(philo->args) && philo->id % 2 != 0)
+	if (pthread_create(&monitor, NULL, meal_monitoring, philo))
+		free_memory(philo->args, EXIT);
+	if (philo->id % 2 != 0)
 	{
 		think_deeply(philo);
 		usleep(philo->args->time_to_think * 1000);
 	}
-	while (!secure_check_end_meal(philo->args))
+	while (1)
 	{
 		eat_spaghetti(philo);
 		go_to_bed(philo);
 		think_deeply(philo);
 		usleep(500);
 	}
-	pthread_join(philo->args->meal_thread, NULL);
-	sem_post(philo->args->lock_print_log);
-	free_memory(philo->args, FALSE);
-	exit (1);
+	free_memory(philo->args, CONTINUE);
+	exit (EXIT_SUCCESS);
 }

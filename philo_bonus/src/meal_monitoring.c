@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meal_monitoring.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
+/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 20:47:45 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/24 00:37:49 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/27 16:58:37 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	monitoring_philos_state(t_philo *philo)
 	if (get_timestamp(philo->args->start_meal) - philo->last_meal
 		> philo->args->time_to_die)
 	{
-		secure_print_log_end(philo->args, philo->id, LOG_DIE);
+		secure_print_log(philo->args, philo->id, LOG_DIE);
 		sem_post(philo->args->check_last_meal);
 		return (1);
 	}
@@ -50,14 +50,21 @@ void	*meal_monitoring(void *arg)
 	philo = (t_philo *)arg;
 	while (1)
 	{
-		if ((philo->args->max_meals_mode && monitoring_meal_count(philo))
-			|| (monitoring_philos_state(philo)))
+		sem_wait(philo->args->death);
+		if (monitoring_philos_state(philo))
 		{
-			// free_memory(philo->args);
-			// exit (1);
+			sem_wait(philo->args->lock_print_log);
+			sem_post(philo->args->process);
 			break ;
 		}
+		sem_post(philo->args->death);
+		sem_wait(philo->args->death);
+		if (philo->args->max_meals_mode && monitoring_meal_count(philo))
+		{
+			sem_post(philo->args->process);
+			break ;
+		}
+		sem_post(philo->args->death);
 	}
-	secure_set_end_meal(philo->args);
 	return (NULL);
 }

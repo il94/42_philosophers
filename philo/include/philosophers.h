@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
+/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/24 00:20:35 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/27 17:25:59 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ void		drop_forks(t_philo *philo);
 void		*meal_time(void *arg);
 
 /* run.c */
-void		run(t_arg *args, t_philo *philos);
+void		run(t_arg *args);
 
 /* initialize.c */
-void		initialize_struct(t_arg *args, t_philo **philos, char **parameters);
+void		initialize_struct(t_arg *args, char **parameters);
 
 /* parsing.c */
 int			is_valid_parameters(int nb_parameters, char **parameters);

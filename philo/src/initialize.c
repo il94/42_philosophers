@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
+/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 09:41:58 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/24 00:20:30 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/27 17:25:07 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,8 @@ static t_arg	initialize_arg_struct(char **parameters)
 	return (args);
 }
 
-void	initialize_struct(t_arg *args, t_philo **philos, char **parameters)
+void	initialize_struct(t_arg *args, char **parameters)
 {
 	*args = initialize_arg_struct(parameters);
-	*philos = initialize_philo_struct(args);
-	args->philos = *philos;
+	args->philos = initialize_philo_struct(args);
 }

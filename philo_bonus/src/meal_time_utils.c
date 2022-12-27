@@ -3,38 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   meal_time_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
+/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 16:53:08 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/24 00:38:01 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/27 17:00:57 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-void	secure_print_log_end(t_arg *args, int philo_id, char *log)
-{
-	sem_wait(args->check_end_meal);
-	if (!args->end_meal)
-	{
-		sem_wait(args->lock_print_log);
-		printf("%lld %d %s\n", get_timestamp(args->start_meal),
-			philo_id, log);
-	}
-	sem_post(args->check_end_meal);
-}
-
 void	secure_print_log(t_arg *args, int philo_id, char *log)
 {
-	sem_wait(args->check_end_meal);
-	if (!args->end_meal)
-	{
-		sem_wait(args->lock_print_log);
-		printf("%lld %d %s\n", get_timestamp(args->start_meal),
-			philo_id, log);
-		sem_post(args->lock_print_log);
-	}
-	sem_post(args->check_end_meal);
+	sem_wait(args->lock_print_log);
+	printf("%lld %d %s\n", get_timestamp(args->start_meal),
+		philo_id, log);
+	sem_post(args->lock_print_log);
 }
 
 void	take_forks(t_philo *philo)
