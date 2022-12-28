@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 20:47:45 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/27 16:58:37 by ilandols         ###   ########.fr       */
+/*   Updated: 2022/12/28 15:47:09 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	monitoring_meal_count(t_philo *philo)
 		philo->args->meal_counter++;
 		philo->has_eaten = FALSE;
 	}
-	if (philo->args->meal_counter >= philo->args->max_meals)
+	if (philo->args->meal_counter > philo->args->max_meals)
 	{
 		sem_post(philo->args->check_has_eaten);
 		return (1);
