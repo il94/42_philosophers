@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
+/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:03:21 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/19 19:32:05 by ilandols         ###   ########.fr       */
+/*   Updated: 2023/01/02 16:33:21 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ static int	is_valid_content_parameters(int nb_parameters, char **parameters)
 	while (i < nb_parameters)
 	{
 		if (!ft_str_isdigit(parameters[i])
-			|| !is_int(ft_long_long_atoi(parameters[i]), parameters[i]))
+			|| !is_int(ft_long_long_atoi(parameters[i]), parameters[i])
+			|| ft_long_long_atoi(parameters[0]) <= 0
+			|| (nb_parameters == 5 && ft_long_long_atoi(parameters[4]) == 0))
 		{
 			printf("Invalid parameters\n");
 			return (0);

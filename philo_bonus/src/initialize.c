@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 09:41:58 by ilandols          #+#    #+#             */
-/*   Updated: 2023/01/02 15:56:18 by ilandols         ###   ########.fr       */
+/*   Updated: 2023/01/02 16:33:10 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	open_semaphores(t_arg *args)
 	args->check_last_meal = sem_open("/check_last_meal", O_CREAT, 0644, 1);
 	args->check_has_eaten = sem_open("/check_has_eaten", O_CREAT, 0644, 1);
 	if (args->process == SEM_FAILED || args->death == SEM_FAILED
-		|| args->forks == SEM_FAILED  || args->lock_print_log == SEM_FAILED
+		|| args->forks == SEM_FAILED || args->lock_print_log == SEM_FAILED
 		|| args->check_last_meal == SEM_FAILED
 		|| args->check_has_eaten == SEM_FAILED)
 		free_memory(args, EXIT);
