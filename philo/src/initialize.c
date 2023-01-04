@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 09:41:58 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/27 17:25:07 by ilandols         ###   ########.fr       */
+/*   Updated: 2023/01/04 14:58:57 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_philo	*initialize_philo_struct(t_arg *args)
 	philos = NULL;
 	philos = malloc(sizeof(t_philo) * args->number_of_philosophers);
 	if (!philos)
-		free_all_and_exit(args);
+		free_memory(args, EXIT);
 	i = 0;
 	while (i < args->number_of_philosophers)
 	{
@@ -56,13 +56,15 @@ static void	init_all_mutex(t_arg *args)
 	i = 0;
 	while (i < args->number_of_philosophers)
 	{
-		pthread_mutex_init(&args->forks[i], NULL);
+		if (pthread_mutex_init(&args->forks[i], NULL))
+			free_memory(args, EXIT);
 		i++;
 	}
-	pthread_mutex_init(&args->lock_print_log, NULL);
-	pthread_mutex_init(&args->check_end_meal, NULL);
-	pthread_mutex_init(&args->check_last_meal, NULL);
-	pthread_mutex_init(&args->check_has_eaten, NULL);
+	if (pthread_mutex_init(&args->lock_print_log, NULL)
+		|| pthread_mutex_init(&args->check_end_meal, NULL)
+		|| pthread_mutex_init(&args->check_last_meal, NULL)
+		|| pthread_mutex_init(&args->check_has_eaten, NULL))
+		free_memory(args, EXIT);
 }
 
 static t_arg	initialize_arg_struct(char **parameters)

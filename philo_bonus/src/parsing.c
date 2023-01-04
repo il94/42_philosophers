@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 15:03:21 by ilandols          #+#    #+#             */
-/*   Updated: 2023/01/02 16:33:21 by ilandols         ###   ########.fr       */
+/*   Updated: 2023/01/04 15:07:32 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ static int	is_valid_content_parameters(int nb_parameters, char **parameters)
 	{
 		if (!ft_str_isdigit(parameters[i])
 			|| !is_int(ft_long_long_atoi(parameters[i]), parameters[i])
-			|| ft_long_long_atoi(parameters[0]) <= 0
-			|| (nb_parameters == 5 && ft_long_long_atoi(parameters[4]) == 0))
+			|| ft_long_long_atoi(parameters[0]) <= 0)
 		{
 			printf("Invalid parameters\n");
 			return (0);
 		}
+		else if (nb_parameters == 5 && ft_long_long_atoi(parameters[4]) == 0)
+			return (0);
 		i++;
 	}
 	return (1);

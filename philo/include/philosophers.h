@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 19:11:22 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/27 17:25:59 by ilandols         ###   ########.fr       */
+/*   Updated: 2023/01/04 14:40:59 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@
 # define LOG_SLEEP "is sleeping"
 # define LOG_THINK "is thinking"
 # define LOG_DIE "died"
+
+typedef enum e_exit {
+	CONTINUE,
+	EXIT
+}	t_exit;
 
 typedef enum e_bool {
 	FALSE,
@@ -81,6 +86,7 @@ void		*meal_time(void *arg);
 
 /* run.c */
 void		run(t_arg *args);
+void		free_memory(t_arg *args, t_exit exit_bool);
 
 /* initialize.c */
 void		initialize_struct(t_arg *args, char **parameters);
@@ -93,7 +99,6 @@ long long	convert_timeval(struct timeval base);
 long long	get_timestamp(struct timeval start);
 long long	ft_long_long_atoi(const char *nptr);
 int			ft_str_isdigit(char *str);
-void		free_all_and_exit(t_arg *args);
 
 /* main.c */
 int			main(int ac, char **av);

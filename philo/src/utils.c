@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilandols <ilyes@student.42.fr>             +#+  +:+       +#+        */
+/*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/11 16:33:00 by ilandols          #+#    #+#             */
-/*   Updated: 2022/12/19 21:37:35 by ilandols         ###   ########.fr       */
+/*   Updated: 2023/01/04 14:41:12 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,4 @@ int	ft_str_isdigit(char *str)
 		i++;
 	}
 	return (1);
-}
-
-void	free_all_and_exit(t_arg *args)
-{
-	if (args->forks)
-		free(args->forks);
-	if (args->philos)
-		free(args->philos);
-	exit (EXIT_FAILURE);
 }
