@@ -6,7 +6,7 @@
 /*   By: ilandols <ilandols@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 09:41:58 by ilandols          #+#    #+#             */
-/*   Updated: 2023/01/02 16:33:10 by ilandols         ###   ########.fr       */
+/*   Updated: 2023/01/06 20:42:15 by ilandols         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ static t_arg	initialize_arg_struct(char **parameters)
 	args.time_to_die = ft_long_long_atoi(parameters[1]);
 	args.time_to_eat = ft_long_long_atoi(parameters[2]);
 	args.time_to_sleep = ft_long_long_atoi(parameters[3]);
-	args.time_to_think = args.time_to_eat;
+	args.time_to_think = (args.time_to_die
+			- (args.time_to_eat + args.time_to_sleep)) / 2;
+	if (args.time_to_think <= 0)
+		args.time_to_think = 0;
 	args.max_meals_mode = FALSE;
 	if (parameters[4])
 	{
